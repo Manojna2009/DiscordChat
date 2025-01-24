@@ -107,7 +107,7 @@
                 document.cookie = `sessionToken=${btoa(username + ':' + password)}; path=/; secure;`;
                 alert('Login successful!');
 
-                window.location.href = '/index.html'; // Replace with your target page URL
+                window.location.href = '/login.html'; // Replace with your target page URL
             } else {
                 // Register process
                 if (!username || !password || !email) {
