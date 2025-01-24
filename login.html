@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Webhook Embed</title>
+    <style>
+        /* Apply a dark theme for the page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #2c2f33;
+            color: #ffffff;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+        }
+        input, textarea {
+            background-color: #23272a;
+            color: #ffffff;
+        }
+        input::placeholder, textarea::placeholder {
+            color: #99aab5;
+        }
+        button {
+            cursor: pointer;
+            background-color: #5865F2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #4854C5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Discord Webhook Embed Sender</h1>
+    <label for="webhookUrl" style="display:none" >Webhook URL: (Not For You)</label>
+    <!-- Static URL for Discord Webhook -->
+    <input type="text" id="webhookUrl" value="https://discord.com/api/webhooks/1331675943059718204/hciD4djW0MljnWeiIne358wK8w_7Sb1i0vbmc4zdiJqaqlvCrnY2qc8t_FO2V0vPNVwb" readonly hidden>
+
+    <label for="title">Your Name:</label>
+    <input type="text" id="title" placeholder="Enter Your Name">
+
+    <label for="description">Message:</label>
+    <textarea id="description" placeholder="Enter the message to be sent"></textarea>
+
+    <label for="color">Message Color (Hex):</label>
+    <input type="text" id="color" placeholder="#5865F2">
+
+    <button id="sendBtn">Send Message</button>
+
+    <script>
+        document.getElementById('sendBtn').addEventListener('click', async () => {
+            // Get input values
+            const webhookUrl = document.getElementById('webhookUrl').value; // Static URL
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const color = document.getElementById('color').value.replace('#', ''); // Remove # from color
+
+            if (!webhookUrl) {
+                alert('Please enter the webhook URL.');
+                return;
+            }
+
+            // Prepare the payload for Discord Webhook
+            const payload = {
+                embeds: [
+                    {
+                        title: title, // Title of the embed
+                        description: description, // Description of the embed
+                        color: parseInt(color, 16), // Convert hex color to integer
+                    }
+                ]
+            };
+
+            try {
+                // Send the payload to the Discord Webhook
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('Embed sent successfully!');
+                } else {
+                    alert('Failed to send embed. Please check your webhook URL and try again.');
+                }
+            } catch (error) {
+                alert('An error occurred: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
+
